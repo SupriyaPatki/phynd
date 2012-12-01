@@ -1,0 +1,72 @@
+#######################################################
+# Phynd Network Indexer
+
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#######################################################
+
+##      Phynd Network Indexer Readme Document
+##      Written by Brent Holden <brent@phynd.net>
+##      Copyright Brent Holden        08-07-2003
+
+
+The Phynd Network Indexer Project Members are:
+========================================================
+David Borgeson <david@phynd.net>
+Brent Holden <brent@phynd.net>
+
+
+Description
+========================================================
+
+The Phynd Network Indexer is a Windows Networking cataloging agent that queries a list of 
+configurable IP addresses to find Windows (Samba) shares and catalogs their contents into a 
+searchable MySQL database.  This database can be searched through a world wide web 
+interface.
+
+
+How To Install 
+========================================================
+
+The notes on how to install Phynd are located in the INSTALL document. The INSTALL document will 
+go over a brief description of how to extract the Phynd tarball and how to get the catalog agent 
+up and running.  The INSTALL document does NOT go over how to install CPAN modules, how to 
+configure the Apache webserver, or how to configure MySQL.  These software packages are assumed 
+to be installed and correctly configured before Phynd is ever installed.
+
+
+Notes
+========================================================
+
+This program does not provide a listing of any hidden shares within your network.  The Phynd 
+indexer respects the privacy of those not wishing to make their shares public.  Any publicly 
+shared host containing files that is configured to be cataloged will be cataloged, with the 
+forementioned exception.
+
+The authors and people involved with this project take no responsibility for any 
+irresponsibility, negligence, or misuse on the part of the end user using this software, nor 
+the person providing this software for public or private use.  This software is provided with an 
+interface to remove violating keywords from a search listing, and is intended to be used by 
+sites in correspondence with the DMCA "Safe Harbour" provisions if it is deemed necessary to 
+remove any search listings.
+
+Any violations incurred by the end user of this software is of their own will, and their 
+responsibility.
+
+
+License
+========================================================
+
+This program is distributed under the GNU GPL2.
+

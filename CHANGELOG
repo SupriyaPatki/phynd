@@ -1,0 +1,26 @@
+----------------------
+Phynd - Changelog
+----------------------
+
+2003-12-21	David Borgeson <koala@phynd.net>
+	* Changed the database structure to be more efficient
+	* Consolidated the configuration files in /etc/phynd
+	* Added mutex locking to the catalog.pl script
+
+
+
+2003-08-07 David Borgeson  <david@phynd.net>
+	* Initial release of Phynd 5.0
+
+
+Major differences from Phynd 4.0
+
+	* Multithreaded PERL cataloging agent
+	* MySQL catalog rather than flatfile databases
+	* PHP Web Interface
+	* Web Based Configuration
+	* Word Restriction
+	* Enhanced search access configuration
+	* Enhanced catalog range configuration
+	* Plugin architecture removed for future redesign and implementation
+

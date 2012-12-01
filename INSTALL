@@ -1,0 +1,203 @@
+#######################################################
+# Phynd Network Indexer
+
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+#######################################################
+
+Phynd Documentation
+=====================================================
+Written by David Borgeson <borgeson@engr.uconn.edu>
+Edited by Brent Holden <brent@engr.uconn.edu>
+
+
+
+
+NOTICE: This is not compatible with Phynd 5.0.x.  It is close, but the database structure has changed, and therefore the old database structure is not supported.
+
+However, things have only gotten better and faster.
+
+
+
+
+REQUIRED PROGRAMS
+=====================================================
+
+Perl 5.8.0	With Modules: Thread, DBD, DBI
+Apache	mod_PHP
+PHP 4.3.x
+MySQL
+fastping (included)
+SAMBA (smbclient)
+
+RECOMMENDED PROGRAMS:
+=====================================================
+
+phpMyAdmin
+
+
+
+
+
+
+QUICK INSTALL PROCEDURE
+=====================================================
+
+* Install all the necessary software.
+* Import the database "phynd.sql" into your system.
+* Edit the /etc/phynd/ configuration files to suit your needs. Make sure it is readable by the users running all the files.
+* Update the MySQL information to reflect the changes you made (username).
+* Alias the directories /config and /www in your Apache configuration so they are accessible from the web.
+* Go to your site config (ex: http://mysite.com/config/) and add the necessary IP addresses.
+* Run the "Build XXX list" from the config site.
+* Run the catalog.pl script.
+* On the first run, it will generate a few errors.  This is a result of the database being empty. Don't worry, everything worked OK.
+* Search search search!!!!
+
+
+Please read on for details......
+
+
+
+
+
+
+
+
+
+
+
+DETAILED INSTALL PROCEDURE
+=====================================================
+
+
+/catalog - catalog script
+/www - the web frontend for searching
+/config - web based config files
+/etc - this directory should go in your root /etc directory
+
+The /etc/phynd/ directory contains files named phyndvars.php and phyndvars.pl.  They are the global variables for all the files.  The .php file has <? ?>  tags because it is included in the php files.  Otherwise, the files are exactly the same.
+
+
+Install all the required programs.
+
+* 	Create a local user for accessing the MySQL database. This can be anything, but you will need
+	to change the variables in the /etc/phynd directory.  By default this is set to phynd/phynd.
+
+* 	Import the initial database structure into MySQL: mysql -u root -p < phynd.sql
+
+* 	Using phpMyAdmin, or editing MySQL manually, edit the permissions of the phynd database, 
+	giving access only to the local user you set (root should by default have access 
+	anyhow).  The user who accesses the database should have permissions to do everything 
+	but GRANT other permissions. Basically, give the user SELECT, INSERT, UPDATE, CREATE, 
+	ALTER, INDEX, DROP.
+	
+	NOTE: You can do the previous step manually using the mysql client, however this can be 
+	tricky, and it is much easier to do with phpMyAdmin.
+
+*	For extra security, the permissions should only be allowed on user@localhost, so nobody 
+	outside the physical computer can mess with the data.  If you want others to be able to 
+	access the raw data, we recommend creating a special user, or allowing all users to only 
+	SELECT.
+
+
+For the next section, refer to the phynd.conf provided.  This can be included in your apache configuration.
+
+
+*	Alias a directory for the configuration files (in the /config directory) in your Apache
+	configuration.  We recommend using an .htaccess file to control access to the 
+	configuration files.  It is also possible to control access by using the Order deny, 
+	allow and Allow from x.x.x.x Apache configuration options.  Either way, you simply want 
+	to bar anybody from just changing the configuration.  If you don't like our 
+	configuration manager, simply edit the databases manually, or use phpMyAdmin to do 
+	configuration.
+
+*	Alias a directory for the web frontend search pages (examples in /www. This is a directory 
+	where you must be extremely careful.  We recommend allowing access to this directory 
+	only from local network subnets that will be using Phynd. We do not recommend allowing 
+	the whole world to access this directory for security reasons.  If you want to allow 
+	everyone to see the search page, there are extra measures to ensure that no unauthorized 
+	users are accessing Phynd.
+
+
+All the web-based files are given as examples, but since this is open sourced, obviously, you 
+can edit them however you see fit. We are merely providing a framework.
+
+
+
+CONFIGURATION
+=====================================================
+
+Point your web browser to the location where you put your configuration files.
+
+Ex: http://yoursite.com/config/
+
+Catalog Configuration - decides what hosts will be cataloged
+	Netblocks -the netblocks that the spider will search, these are inclusive at the ends
+	Include IP's - any IP's you want to be cataloged, that are outside the netblocks
+	Exclude IP's - any IP's you want to exclude from being cataloged
+	Restrict Words - do not catalog any files that contain these words, they are wildcard at the beginning and end, so 'ron' will filter out anything that matches *ron*
+
+	Build catalog Iplist - creates the list of IP's to catalog. This must be done each time you edit any of the categories
+
+
+
+NOTE: The Access Configuration is an exclusive list. If an IP is not listed, it will not be given access.
+
+Access Configuration -decides which hosts are allowed to search the Phynd database
+	Netblocks - netblocks that are allowed to search
+	Include IP's - any IP's outside the netblocks that are allowed to search
+	Exclude IP's - any IP's outside the netblocks that are not allowed to search
+
+	Build access Iplist - creates the list of IP's to allow access. This must be done each time you edit any of the categories
+
+
+*	Edit the phyndvars.inc file in the /catalog directory, and make it reflect the number of 
+	threads you wish to run on your system.  We found that 14 threads saturates a 512MB 
+	system, and 18+ just doesn't work.  You may want to run the catalog manually while you 
+	tweak this setting...If you get segmentation faults, lower the number of threads.
+
+	To have the catalog script run automatically, place an entry in your crontab 
+	(/path/to/catalog.pl).  We recommend having it run every 6 hours. You can always run the 
+	catalog script manually in case there is a need for debugging.  The script takes care of 
+	updating the database, so you don't need to do anything beyond running it.
+
+*	Using the example web frontend, you can make your own custom page for searching.  We only 
+	provided a skeleton for reference.  It is recommended that you run the function that 
+	checks Access Privileges before displaying search results - the example page does this.
+
+*	Sample config files for Apache and crontab have been provided in the /etc/phynd 
+	directory.  Edit the phynd.conf to your liking and include it in your 
+	/etc/apache/httpd.conf configuration at the end.
+
+Once you have done all this, you are ready to allow people to search Phynd.
+
+You may want to tweak MySQL to your needs, as some systems react better to different settings.  
+If you experience heavy load (3+ searches/sec), it is probably a good idea to increase the 
+amount of open tables, pointer memory....etc.
+
+
+The categories that are generated in the database, and also on the search page are in the MySQL database.  They can be edited...and you'll figure out the format.
+
+Run the catalog.pl script, either by crontab or manually, to fill the database.
+
+
+
+
+
+Good Luck!!!!
+
+
+-Dave
+The Phynd Project

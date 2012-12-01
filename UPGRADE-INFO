@@ -1,0 +1,3 @@
+NOTICE: This is not compatible with Phynd 5.0.x.  It is close, but the database structure has changed, and therefore the old database structure is not supported.
+
+However, things have only gotten better and faster.

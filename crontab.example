@@ -1,0 +1,2 @@
+# Phynd crontab entry.
+13 3,12,17 * * * /usr/share/phynd/catalog/catalog.pl 2> /usr/share/phynd/catalog.err 1> /usr/share/phynd/catalog.log
